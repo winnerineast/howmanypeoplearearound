@@ -16,14 +16,7 @@ Tested on Linux (Raspbian and Ubuntu) and Mac OS X.
 Getting started
 ===============
 
-## Docker alternative
-
-If Docker is installed locally and you want to take *howmanypeoplearearound* out for a quick spin, you can try the following:
-1. Copy Dockerfile from this repo in your current working directory
-2. `docker build -t howmanypeoplearearound .`  # that . at the end is important
-3. `docker run -it --net=host --name howmanypeoplearearound howmanypeoplearearound`
-
-NOTE: This Docker alternative is known to work on Ubuntu but *not* on Mac OS X.  Feedback on other platforms would be appreciated.
+For a video walkthrough on how to install, checkout [PNPtutorials](https://youtu.be/dLzouUfJyMM?t=3m2s).
 
 ## Dependencies
 
@@ -35,15 +28,28 @@ Python 2.7 or preferably Python 3 must be installed on your machine with the `pi
 
 ### WiFi adapter that supports monitor mode
 
-There are a number of possible USB WiFi adapters that support monitor mode.
-Personally I prefer the [TN722N](http://www.ebay.com/sch/i.html?_pgn=1&isRefine=false&_nkw=tn722n) which 
-is only ~$10 and works great with every model of the Raspberry Pi. [Here is a good list of adapters that support 'ad-hoc' mode](http://elinux.org/RPi_USB_Wi-Fi_Adapters) for the
-Raspberry Pi.
+There are a number of possible USB WiFi adapters that support monitor mode. Here's a list that are popular:
+
+- [USB Rt3070 $14](https://www.amazon.com/gp/product/B00NAXX40C/ref=as_li_tl?ie=UTF8&tag=scholl-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B00NAXX40C&linkId=b72d3a481799c15e483ea93c551742f4)
+- [Panda PAU5 $14](https://www.amazon.com/gp/product/B00EQT0YK2/ref=as_li_tl?ie=UTF8&tag=scholl-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B00EQT0YK2&linkId=e5b954672d93f1e9ce9c9981331515c4)
+- [Panda PAU6 $15](https://www.amazon.com/gp/product/B00JDVRCI0/ref=as_li_tl?ie=UTF8&tag=scholl-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B00JDVRCI0&linkId=e73e93e020941cada0e64b92186a2546)
+- [Panda PAU9 $36](https://www.amazon.com/gp/product/B01LY35HGO/ref=as_li_tl?ie=UTF8&tag=scholl-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B01LY35HGO&linkId=e63f3beda9855abd59009d6173234918)
+- [Alfa AWUSO36NH $33](https://www.amazon.com/gp/product/B0035APGP6/ref=as_li_tl?ie=UTF8&tag=scholl-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B0035APGP6&linkId=b4e25ba82357ca6f1a33cb23941befb3)
+- [Alfa AWUS036NHA $40](https://www.amazon.com/gp/product/B004Y6MIXS/ref=as_li_tl?ie=UTF8&tag=scholl-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B004Y6MIXS&linkId=0277ca161967134a7f75dd7b3443bded)
+- [Alfa AWUS036NEH $40](https://www.amazon.com/gp/product/B0035OCVO6/ref=as_li_tl?ie=UTF8&tag=scholl-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B0035OCVO6&linkId=bd45697540120291a2f6e169dcf81b96)
+- [Sabrent NT-WGHU $15 (b/g) only](https://www.amazon.com/gp/product/B003EVO9U4/ref=as_li_tl?ie=UTF8&tag=scholl-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B003EVO9U4&linkId=06d4784d38b6bcef5957f3f6e74af8c8)
+
+Namely you want to find a USB adapter with one of the following chipsets: Atheros AR9271, Ralink RT3070, Ralink RT3572, or Ralink RT5572.
 
 ### Mac OS X
 ```
   brew install wireshark
   brew cask install wireshark-chmodbpf
+```
+
+You need to dissociate from any AP before initiating the scanning:
+```
+sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z
 ```
 
 ### Linux [tshark](https://www.wireshark.org/docs/man-pages/tshark.html) 
@@ -63,6 +69,7 @@ newgrp wireshark
 pip install howmanypeoplearearound
 ```
 
+
 ## Run
 
 ### Quickstart
@@ -78,7 +85,17 @@ There are about 3 people around.
 You will be prompted for the WiFi adapter to use for scanning. Make sure to use
 an adapter that supports "monitor" mode.
 
-#### Options
+### Docker alternative
+
+If Docker is installed locally and you want to take *howmanypeoplearearound* out for a quick spin, you can try the following:
+1. Copy Dockerfile from this repo in your current working directory
+2. `docker build -t howmanypeoplearearound .`  # that . at the end is important
+3. `docker run -it --net=host --name howmanypeoplearearound howmanypeoplearearound`
+
+NOTE: This Docker alternative is known to work on Ubuntu but *not* on Mac OS X.  Feedback on other platforms would be appreciated.
+
+
+### Options
 
 You can modify the scan time, designate the adapter, or modify the output using some command-line options.
 ```bash
@@ -157,7 +174,7 @@ How does it work?
 ==================
 
 *howmanypeoplearearound* counts up the number of probe requests coming from cellphones in a given amount of time.
-The probe requests can be "sniffed" from a monitor-mode enabled WiFi adapter using `tshark`. An acccurate count does 
+The probe requests can be "sniffed" from a monitor-mode enabled WiFi adapter using `tshark`. An accurate count does 
 depend on everyone having cellphone and also scanning long enough (1 - 10 minutes) to capture the packet when 
 a phone pings the WiFi network (which happens every 1 to 10 minutes unless the phone is off or WiFi is disabled).
 
